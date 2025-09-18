@@ -3,6 +3,7 @@ import pandas as pd
 import os
 import csv
 import datetime
+from dateutil.relativedelta import relativedelta
 
 SOURCE_1 = "personal_entries.json"
 SOURCE_2 = "billing_entries.json"
@@ -30,6 +31,7 @@ def reshape_df(df):
         return lc > lu or row['ZIP'] == "NaN"
     
     df['update_needed'] = df.apply(_compare_dates, axis=1)
+    df['expired'] = df.apply(_compare_dates, axis=1)
     return df.drop(columns = ['last_contacted', 'last_updated'])
     
 def load_src1(json_path):
